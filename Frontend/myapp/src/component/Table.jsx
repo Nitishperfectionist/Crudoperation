@@ -84,3 +84,10 @@ const Table = ({UpdateProduct,DeleteProduct}) => {
 }
 
 export default Table
+
+
+
+
+
+
+

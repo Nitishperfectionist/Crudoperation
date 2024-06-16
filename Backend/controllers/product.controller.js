@@ -38,72 +38,34 @@ const createProduct = async (req, res) => {
 
 
 //read/get product
-const getProduct=async(req,res)=>{
+const getProduct = async (req, res) => {
+    try {
+        const product = await ProductModel.find();
 
-try{
-    const product=await ProductModel.find();
-    if(!product){
-        return res.status(404).json({
-            success:false,
-            message:"product not found",
-    })
-}
-return res.status(200).json({
-    success:true,
-    message:"product is present",
-    product
-})
-}
-catch(error){
-    console.log(error);
-    res.status(500).json({
-        success:false,
-        message:"internal server error",
-    })
-}
+        if (product.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Products not found",
+            });
+        }
 
-}
+        return res.status(200).json({
+            success: true,
+            message: "Products found",
+            product
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+};
+
 
 
 // update product
-
-// const updateProduct = async (req, res) => {
-//     try {
-//         const productId = req.params.id;
-
-//         // Check if the request body is empty
-//         if (Object.keys(req.body).length === 0) {
-//             return res.status(400).json({
-//                 success: false,
-//                 message: "At least one field is required to update the product",
-//             });
-//         }
-
-//         const product = await ProductModel.findByIdAndUpdate(productId, req.body, {
-//             new: true,
-//             runValidators: true, // Ensure validators run on update
-//         });
-
-//         if (!product) {
-//             return res.status(404).json({
-//                 success: false,
-//                 message: "Product not found",
-//             });
-//         }
-
-//         return res.status(200).json({
-//             success: true,
-//             message: "Product updated successfully",
-//             product,
-//         });
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).json({
-//             success: false,
-//             message: "Internal server error",
-//         });
-//     }
-// };
 const updateProduct = async (req, res) => {
     try {
         const productId = req.params.id;
